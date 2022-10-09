@@ -13,4 +13,7 @@ setup(
             'pyclip2file = pyclip2file.app.start:main'
         ]
     },
+    install_requires= [
+        'PySide2>=5.10.0',
+    ]
 )
