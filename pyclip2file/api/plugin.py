@@ -6,11 +6,13 @@ class Plugins:
     """
     Convenience class for accessing internal plugins.
     """
-    Clipboard = 'clipboard'
+    ClipboardView = 'clipboard_view'
+    ClipboardWatcher = 'clipboard_watcher'
     Editor = 'editor'
     FileSaver = 'file_saver'
     Preview = 'preview'
-    Scaler = 'scaler'
+    ScaleTransformer = 'scale_transformer'
+    Transformer = 'transformer'
 
 
 class Plugin(QObject, PluginObserver):
@@ -59,3 +61,10 @@ class Plugin(QObject, PluginObserver):
         raise NotImplementedError(
             f'The plugin {type(self)} is missing an implementation of on_initialize'
         )
+
+    def before_mainwindow_visible(self):
+        """
+        Actions to be performed after setup but before the main window's has
+        been shown.
+        """
+        pass

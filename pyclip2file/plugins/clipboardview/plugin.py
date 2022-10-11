@@ -8,33 +8,31 @@ from pyclip2file.api.decorators import on_plugin_available
 from pyclip2file.api.plugin import Plugins
 from pyclip2file.plugins.clipboardwatcher.plugin import ClipboardWatcherPlugin
 from pyclip2file.plugins.editor.plugin import EditorPlugin
-from pyclip2file.plugins.preview.panel import PreviewPanel
+from pyclip2file.plugins.clipboardview.panel import ClipboardViewPanel
 
 logger = logging.getLogger(__name__)
 
 
-class PreviewPlugin(Plugin):
-    NAME = 'preview'
+class ClipboardViewPlugin(Plugin):
+    NAME = 'clipboard_view'
     REQUIRES = [Plugins.ClipboardWatcher, Plugins.Editor]
 
     def on_initialize(self):
         self._pixmap: Optional[QPixmap] = None
-        self._viewer: Optional[PreviewPanel] = None
+        self._viewer: Optional[ClipboardViewPanel] = None
 
     @on_plugin_available(plugin=Plugins.Editor)
     def on_editor_plugin_available(self):
-        logger.warn('editor available!')
         editor_plugin: EditorPlugin = self.get_plugin(Plugins.Editor)
 
         if not self._viewer:
-            self._viewer = PreviewPanel()
+            self._viewer = ClipboardViewPanel()
         if self._pixmap:
             self._viewer.setPixmap(self._pixmap)
         editor_plugin.add_panel(self._viewer)
 
     @on_plugin_available(plugin=Plugins.ClipboardWatcher)
     def on_clipboard_plugin_available(self):
-        logger.warn('clipboard available!')
         clipboard_plugin: ClipboardWatcherPlugin = self.get_plugin(Plugins.ClipboardWatcher)
         clipboard_plugin.sig_clipboard_changed.connect(self.on_clipboard_changed)
         self.on_clipboard_changed()

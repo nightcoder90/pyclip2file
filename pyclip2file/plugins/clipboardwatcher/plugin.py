@@ -7,8 +7,8 @@ from pyclip2file.api.plugin import Plugin
 
 logger = logging.getLogger(__name__)
 
-class ClipboardPlugin(Plugin):
-    NAME = 'clipboard'
+class ClipboardWatcherPlugin(Plugin):
+    NAME = 'clipboard_watcher'
 
     sig_clipboard_changed = Signal()
 

@@ -25,6 +25,15 @@ class MainWindow(QMainWindow):
             logger.info(f'Registering Plugin: {plugin.NAME}')
             PLUGIN_REGISTRY.register_plugin(self, plugin)
 
+    def pre_visible_setup(self):
+        logger.info('Setting up window...')
+        for plugin_name in PLUGIN_REGISTRY:
+            plugin_instance = PLUGIN_REGISTRY.get_plugin(plugin_name)
+            try:
+                plugin_instance.before_mainwindow_visible()
+            except AttributeError:
+                pass
+
 def setup_logger():
     from logging import Formatter, StreamHandler, getLogger
     fmt = Formatter('%(asctime)s [%(levelname)s] [%(name)s] -> %(message)s')
@@ -38,6 +47,7 @@ def main():
     setup_logger()
     app = QApplication()
     mainwindow = MainWindow()
+    mainwindow.pre_visible_setup()
     mainwindow.show()
     sys.exit(app.exec_())
 

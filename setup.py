@@ -13,11 +13,13 @@ setup(
             'pyclip2file = pyclip2file.app.start:main'
         ],
         'pyclip2file.plugins': [
-            'clipboard = pyclip2file.plugins.clipboard.plugin:ClipboardPlugin',
+            'clipboard_view = pyclip2file.plugins.clipboardview.plugin:ClipboardViewPlugin',
+            'clipboard_watcher = pyclip2file.plugins.clipboardwatcher.plugin:ClipboardWatcherPlugin',
             'editor = pyclip2file.plugins.editor.plugin:EditorPlugin',
             'file_saver = pyclip2file.plugins.filesaver.plugin:FileSaverPlugin',
             'preview = pyclip2file.plugins.preview.plugin:PreviewPlugin',
-            'scaler = pyclip2file.plugins.scaler.plugin:ScalerPlugin',
+            'scale_transformer = pyclip2file.plugins.scaletransformer.plugin:ScaleTransformerPlugin',
+            'transformer = pyclip2file.plugins.transformer.plugin:TransformerPlugin',
         ]
     },
     install_requires= [
