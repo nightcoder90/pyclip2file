@@ -1,11 +1,14 @@
+from PySide2.QtCore import QObject, Signal
 from PySide2.QtGui import QPixmap
 from pyclip2file.widgets.layoutbuilder import LayoutBuilder
 
-class BaseTransformer:
+class BaseTransformer(QObject):
     ID = None
 
-    def __init__(self):
-        pass
+    sig_updated = Signal()
+
+    def __init__(self, parent: QObject=None):
+        QObject.__init__(self, parent)
 
     def transform(self, pixmap: QPixmap) -> QPixmap:
         raise NotImplementedError()

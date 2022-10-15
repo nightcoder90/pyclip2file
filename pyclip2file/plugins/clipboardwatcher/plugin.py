@@ -11,6 +11,7 @@ class ClipboardWatcherPlugin(Plugin):
     NAME = 'clipboard_watcher'
 
     sig_clipboard_changed = Signal()
+    
 
     def on_initialize(self):
         self._pixmap = QPixmap()

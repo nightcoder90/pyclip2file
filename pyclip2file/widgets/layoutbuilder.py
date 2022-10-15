@@ -4,7 +4,7 @@ from PySide2.QtWidgets import QWidget, QGridLayout, QLayoutItem
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+#logger.setLevel(logging.DEBUG)
 
 class SpecialTypes:
     Break = 'break'

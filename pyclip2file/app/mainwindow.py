@@ -2,6 +2,7 @@ import sys
 import logging
 from PySide2.QtWidgets import QApplication, QMainWindow
 from pyclip2file.api.registry import PLUGIN_REGISTRY
+from pyclip2file.api.plugin import Plugin
 from pyclip2file.app.find_plugins import find_plugins
 
 
@@ -13,13 +14,13 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.setup()
 
-    def get_plugin(self, plugin_name):
+    def get_plugin(self, plugin_name: str) -> Plugin:
         if plugin_name in PLUGIN_REGISTRY:
             return PLUGIN_REGISTRY.get_plugin(plugin_name)
         else:
             raise Exception(f'Plugin {plugin_name} not found!')
 
-    def setup(self):
+    def setup(self) -> None:
         plugins = find_plugins()
         for plugin in list(plugins.values())[::-1]:
             logger.info(f'Registering Plugin: {plugin.NAME}')
@@ -41,7 +42,7 @@ def setup_logger():
     h.setFormatter(fmt)
     logger = getLogger()
     logger.addHandler(h)
-    logger.setLevel('DEBUG')
+    logger.setLevel(logging.WARN)
 
 def main():
     setup_logger()

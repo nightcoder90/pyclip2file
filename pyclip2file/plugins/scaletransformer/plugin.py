@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 from pyclip2file.api.plugin import Plugin, Plugins
 from pyclip2file.api.decorators import on_plugin_available
 from pyclip2file.plugins.transformer.plugin import TransformerPlugin
@@ -18,4 +17,4 @@ class ScaleTransformerPlugin(Plugin):
     def on_transformer_plugin_available(self):
         logger.info(f'{__class__}.on_transformer_plugin_available')
         transformer_plugin: TransformerPlugin = self.get_plugin(Plugins.Transformer)
-        transformer_plugin.add_transformer(ScaleTransformer())
+        transformer_plugin.register_transformer(ScaleTransformer())
