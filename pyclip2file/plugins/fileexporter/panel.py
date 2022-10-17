@@ -8,14 +8,14 @@ from pyclip2file.widgets.pixmapviewer import PixmapViewer
 logger = logging.getLogger(__name__)
 
 
-class FileSaverPanel(GroupBoxEditorPanel):
+class FileExporter(GroupBoxEditorPanel):
 
     sig_save_requested = Signal(str)
 
     def __init__(self):
-        GroupBoxEditorPanel.__init__(self, 'Z.FileSaver')
+        GroupBoxEditorPanel.__init__(self, 'Z.FileExporter')
 
-        self.setTitle('Save')
+        self.setTitle('Export')
         
         lyt = QHBoxLayout()
         self.setLayout(lyt)
@@ -37,7 +37,7 @@ class FileSaverPanel(GroupBoxEditorPanel):
 
     @Slot()
     def on_browse_button_clicked(self):
-        path, ext = QFileDialog.getSaveFileName(self, 'Save')
+        path, ext = QFileDialog.getSaveFileName(self, 'Export')
         if path:
             self.path_edit.setText(path)
 

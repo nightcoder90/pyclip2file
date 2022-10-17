@@ -1,30 +1,33 @@
 import logging
 from typing import Optional
 
-from PySide2.QtCore import Slot
+from PySide2.QtCore import Signal, Slot
 from PySide2.QtGui import QPixmap
+from PySide2.QtWidgets import QErrorMessage
 from pyclip2file.api.plugin import Plugin
 from pyclip2file.api.decorators import on_plugin_available
 from pyclip2file.api.plugin import Plugins
 from pyclip2file.plugins.transformer.plugin import TransformerPlugin
 from pyclip2file.plugins.editor.plugin import EditorPlugin
-from pyclip2file.plugins.filesaver.panel import FileSaverPanel
-from pyclip2file.plugins.filesaver.macroexpander import MacroExpander, datetime_expander
+from pyclip2file.plugins.fileexporter.panel import FileExporter
+from pyclip2file.plugins.fileexporter.macroexpander import MacroExpander, datetime_expander
 
 logger = logging.getLogger(__name__)
 
 
-class FileSaverPlugin(Plugin):
-    NAME = 'file_saver'
+class FileExporterPlugin(Plugin):
+    NAME = 'file_exporter'
     REQUIRES = [Plugins.Transformer, Plugins.Editor]
 
+    sig_exported = Signal(str)
+
     def create_panel(self):
-        panel = FileSaverPanel()
-        panel.sig_save_requested.connect(self.on_save_requested)
+        panel = FileExporter()
+        panel.sig_save_requested.connect(self.on_export_requested)
         return panel
 
     def on_initialize(self):
-        self._panel: Optional[FileSaverPanel] = None
+        self._panel: Optional[FileExporter] = None
         self._pixmap: Optional[QPixmap] = None
         self._macro_expander = MacroExpander()
         self._macro_expander.register_variable('%{DATETIME}', 'datetime', datetime_expander)
@@ -56,11 +59,15 @@ class FileSaverPlugin(Plugin):
             self._panel.save_enable(True)
 
     @Slot(str)
-    def on_save_requested(self, path: str):
+    def on_export_requested(self, path: str):
         if not path:
             logger.warn('Null path')
         if not self._pixmap:
             logger.warn('Null pixmap')
-        expanded_path = self._macro_expander.expand(path)
-        logger.warn(f'Saving...{expanded_path}')
+        expanded_path = self.expand_path(path)
+        logger.warn(f'Exporting...{expanded_path}')
         self._pixmap.save(expanded_path)
+        self.sig_exported.emit(path)
+
+    def expand_path(self, path: str) -> str:
+        return self._macro_expander.expand(path)

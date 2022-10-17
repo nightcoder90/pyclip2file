@@ -12,7 +12,7 @@ from pyclip2file.plugins.transformer.manager import TransformerManager
 from pyclip2file.widgets.layoutbuilder import LayoutBuilder
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+# logger.setLevel(logging.DEBUG)
 
 class TransformerPlugin(Plugin):
     NAME = "transformer"

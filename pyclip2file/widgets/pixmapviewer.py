@@ -12,7 +12,7 @@ from PySide2.QtWidgets import (
 )
 
 logger = logging.getLogger(__name__)
-#logger.setLevel(logging.DEBUG)
+# logger.setLevel(logging.DEBUG)
 
 
 class PixmapPopUp(QWidget):
@@ -37,9 +37,10 @@ class PixmapPopUp(QWidget):
 
     def event(self, e: QEvent) -> bool:
         if e.type() == QEvent.Enter:
-            logger.debug('PixmapPopUp.Enter')
-            self._is_entered = True
-            QApplication.setOverrideCursor(QCursor(Qt.PointingHandCursor))
+            if not self._is_entered:
+                logger.debug('PixmapPopUp.Enter')
+                self._is_entered = True
+                QApplication.setOverrideCursor(QCursor(Qt.PointingHandCursor))
         elif e.type() == QEvent.Leave:
             if self._is_entered:
                 logger.debug('PixmapPopUp.Leave')
@@ -154,6 +155,7 @@ class PixmapViewer(QWidget):
         self._viewer.setPixmap(self._scaled_pixmap)
         self._popup.setPixmap(self._pixmap)
         self.update_overlay_text()
+        self.show_overlay()
 
     def scaled_pixmap(self) -> QPixmap:
         return self._pixmap.scaled(self.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
@@ -163,19 +165,21 @@ class PixmapViewer(QWidget):
             self._viewer.setPixmap(self.scaled_pixmap())
 
     def event(self, e: QEvent) -> bool:
-        if self._pixmap:
-            if e.type() == QEvent.Enter:
-                logger.debug('PixmapViewport.Enter')
-                QApplication.setOverrideCursor(QCursor(Qt.PointingHandCursor))
-                self._is_entered = True
-                self.show_overlay()
-                self.update()
-        if self._is_entered and e.type() == QEvent.Leave:
-            logger.debug('PixmapViewport.Leave')
-            QApplication.restoreOverrideCursor()
-            self._is_entered = False
-            self.hide_overlay()
-            self.update()
+        if e.type() == QEvent.Enter:
+            if self._pixmap:        
+                if not self._is_entered:
+                    logger.debug(f'PixmapViewport.Enter {self}')
+                    QApplication.setOverrideCursor(QCursor(Qt.PointingHandCursor))
+                    self._is_entered = True
+                    # self.show_overlay()
+                    # self.update()
+        if e.type() == QEvent.Leave:
+            if self._is_entered:
+                logger.debug('PixmapViewport.Leave')
+                QApplication.restoreOverrideCursor()
+                self._is_entered = False
+                # self.hide_overlay()
+                # self.update()
         return super().event(e)
 
     def mouseReleaseEvent(self, ev: QMouseEvent) -> None:

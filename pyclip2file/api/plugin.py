@@ -9,7 +9,7 @@ class Plugins:
     ClipboardView = 'clipboard_view'
     ClipboardWatcher = 'clipboard_watcher'
     Editor = 'editor'
-    FileSaver = 'file_saver'
+    FileExporter = 'file_exporter'
     Preview = 'preview'
     ScaleTransformer = 'scale_transformer'
     Transformer = 'transformer'

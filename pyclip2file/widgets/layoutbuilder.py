@@ -72,6 +72,7 @@ class LayoutBuilder:
                 if current_column != 0:
                     current_row += 1
                     current_column = 0
+                continue
             elif item.widget:
                 logger.info(f'{__class__}.addWidget')
                 grid_layout.addWidget(item.widget, current_row, current_column, 1, item.span)

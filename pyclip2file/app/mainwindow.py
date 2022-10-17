@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
+        self.setWindowTitle('pyclip2file')
         self.setup()
 
     def get_plugin(self, plugin_name: str) -> Plugin:
